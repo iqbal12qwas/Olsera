@@ -75,8 +75,17 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\" : [8,9]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/delete_item/5",
+					"raw": "http://127.0.0.1:8000/api/delete_item",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -87,8 +96,7 @@
 					"port": "8000",
 					"path": [
 						"api",
-						"delete_item",
-						"5"
+						"delete_item"
 					]
 				}
 			},
