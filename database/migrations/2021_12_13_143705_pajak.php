@@ -18,8 +18,6 @@ class Pajak extends Migration
             $table->increments('id');
             $table->string('name');
             $table->decimal('rate', 5,2);
-            $table->integer('id_item')->unsigned();
-            $table->foreign('id_item')->references('id')->on('item')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

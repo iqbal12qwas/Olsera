@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 13, 2021 at 05:31 PM
+-- Generation Time: Dec 14, 2021 at 07:56 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.11
 
@@ -29,16 +29,20 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `item` (
   `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pajak` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `item`
 --
 
-INSERT INTO `item` (`id`, `name`) VALUES
-(1, 'baju batik'),
-(2, 'jeans');
+INSERT INTO `item` (`id`, `name`, `pajak`) VALUES
+(1, 'celana', 1),
+(2, 'celana', 2),
+(3, 'celana', 3),
+(4, 'baju batik', 1),
+(5, 'baju batik', 2);
 
 -- --------------------------------------------------------
 
@@ -57,8 +61,8 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(1, '2021_12_13_100525_item', 1),
-(2, '2021_12_13_143705_pajak', 1);
+(1, '2021_12_13_143705_pajak', 1),
+(2, '2021_12_14_015433_item', 1);
 
 -- --------------------------------------------------------
 
@@ -69,20 +73,17 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 CREATE TABLE `pajak` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `rate` decimal(5,2) NOT NULL,
-  `id_item` int(10) UNSIGNED NOT NULL
+  `rate` decimal(5,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `pajak`
 --
 
-INSERT INTO `pajak` (`id`, `name`, `rate`, `id_item`) VALUES
-(1, 'pph', '0.03', 1),
-(2, 'pajak toko', '0.10', 1),
-(3, 'pajak transportasi', '0.03', 2),
-(4, 'pajak pembuatan', '0.04', 2),
-(6, 'pph', '0.15', 2);
+INSERT INTO `pajak` (`id`, `name`, `rate`) VALUES
+(1, 'pajak toko', '0.10'),
+(2, 'pph', '0.05'),
+(3, 'pajak transportasi', '0.03');
 
 --
 -- Indexes for dumped tables
@@ -92,7 +93,8 @@ INSERT INTO `pajak` (`id`, `name`, `rate`, `id_item`) VALUES
 -- Indexes for table `item`
 --
 ALTER TABLE `item`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `item_pajak_foreign` (`pajak`);
 
 --
 -- Indexes for table `migrations`
@@ -104,8 +106,7 @@ ALTER TABLE `migrations`
 -- Indexes for table `pajak`
 --
 ALTER TABLE `pajak`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pajak_id_item_foreign` (`id_item`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -127,17 +128,17 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `pajak`
 --
 ALTER TABLE `pajak`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `pajak`
+-- Constraints for table `item`
 --
-ALTER TABLE `pajak`
-  ADD CONSTRAINT `pajak_id_item_foreign` FOREIGN KEY (`id_item`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `item`
+  ADD CONSTRAINT `item_pajak_foreign` FOREIGN KEY (`pajak`) REFERENCES `pajak` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

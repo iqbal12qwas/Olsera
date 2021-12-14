@@ -3,27 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\ItemModel;
-use App\Models\PajakModel;
+use App\Models\Item;
+use App\Models\Pajak;
 use DB;
 
 class ListDataItemController extends Controller
 {
     public function read_data(Request $request, $id)
     {
-        $data_item = ItemModel::find($id);
+        $get_item = Item::find($id);
+        $get_value_pajak = DB::table("item")->select("pajak")->where('name', '=', $get_item->name)->get();
         
-        $pajak = DB::table("pajak")->where('id_item', '=', $id)->get(); 
-        
-        $data = array();
         $all_pajak = array();
-        foreach ($pajak as $value2 => $key2) {
-            $rate = $key2->rate * 100;
-            $all_pajak[] = ["id" => $key2->id, "name" => $key2->name, "rate" => $rate."%"];
+        $get_pajak = array();
+        foreach($get_value_pajak as $value => $key) {
+            $get_pajak[] = DB::table('pajak')->select("id","name",DB::raw("(CONCAT(rate*100, '%')) as `rate`"))
+                                            ->where('id', '=', $key->pajak)->get();
         }
-        $data[] = ["id" => $data_item->id, "name" => $data_item->name, "pajak" => $all_pajak];
-       
-    
+        $data[] = ["id" => $get_item->id, "name" => $get_item->name, "pajak" => $get_pajak];
+ 
         return response()->json(['data' => $data]);
     }
 }

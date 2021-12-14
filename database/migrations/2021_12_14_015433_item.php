@@ -17,6 +17,8 @@ class Item extends Migration
         Schema::create('item', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->integer('pajak')->unsigned();
+            $table->foreign('pajak')->references('id')->on('pajak')->onDelete('cascade')->onUpdate('cascade');
             });
     }
 
