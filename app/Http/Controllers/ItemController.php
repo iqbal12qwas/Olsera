@@ -88,13 +88,10 @@ class ItemController extends Controller
         }
     }
 
-    public function delete_item(Request $request, $id)
+    public function delete_item(Request $request)
     {
-        $item = Item::find($id);
-        $get_item = DB::table("item")->where('name', '=', $item->name)->get();
-        foreach($get_item as $value2 => $key2) {
-            DB::table('item')->where('id', $key2->id)->delete();
-        }
+        $id = $request->input('id');
+        Item::whereIn('id', $id)->delete();
         return response()->json("Delete Success");
     }
 }
